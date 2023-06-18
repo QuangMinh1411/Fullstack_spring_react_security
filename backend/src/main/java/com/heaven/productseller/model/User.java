@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -20,23 +19,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username",unique = true,nullable = false,length = 100)
+    @Column(name = "username", unique = true, nullable = false, length = 100)
     private String username;
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "create_time",nullable = false)
+    @Column(name = "create_time", nullable = false)
     private LocalDateTime createTime;
-    @Enumerated(value=EnumType.STRING)
-    @Column(name = "role",nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private Role role;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Purchase> purchaseList = new ArrayList<>();
 
     @Transient
     private String token;
-    public void addPurchase(Purchase purchase){
+
+    public void addPurchase(Purchase purchase) {
         this.purchaseList.add(purchase);
 
     }

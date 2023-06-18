@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -30,10 +29,10 @@ public class Product {
     @Column(name = "create_time", nullable = false)
     private LocalDateTime createTime;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<Purchase> purchaseList = new ArrayList<>();
 
-    public void addPurchase(Purchase purchase){
+    public void addPurchase(Purchase purchase) {
         this.purchaseList.add(purchase);
     }
 }
