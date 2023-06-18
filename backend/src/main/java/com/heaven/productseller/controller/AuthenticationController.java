@@ -1,9 +1,7 @@
 package com.heaven.productseller.controller;
 
 import com.heaven.productseller.model.User;
-import com.heaven.productseller.service.AuthenticationService;
 import com.heaven.productseller.service.AuthenticationServiceImpl;
-import com.heaven.productseller.service.UserService;
 import com.heaven.productseller.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,15 +20,15 @@ public class AuthenticationController {
     private final UserServiceImpl userService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@RequestBody User user){
-        if(userService.findByUsername(user.getUsername()).isPresent()){
+    public ResponseEntity<?> signUp(@RequestBody User user) {
+        if (userService.findByUsername(user.getUsername()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<>(userService.saveUser(user),HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<?> signIn(@RequestBody User user){
-        return new ResponseEntity<>(authenticationService.signInAndReturnJWT(user),HttpStatus.OK);
+    public ResponseEntity<?> signIn(@RequestBody User user) {
+        return new ResponseEntity<>(authenticationService.signInAndReturnJWT(user), HttpStatus.OK);
     }
 }
