@@ -2,7 +2,6 @@ package com.heaven.productseller.security;
 
 import com.heaven.productseller.model.Role;
 import com.heaven.productseller.security.jwt.JwtAuthorizationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
 
     @Autowired
-    private  CustomUserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
     @Autowired
     private JwtAuthorizationFilter jwtAuthorizationFilter;
 
@@ -38,24 +37,21 @@ public class SecurityConfig {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests().requestMatchers("/api/v1/authentication/**").permitAll()
-                .requestMatchers(HttpMethod.GET,"/api/v1/products").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/products").hasRole(Role.ADMIN.name())
-                .requestMatchers(HttpMethod.DELETE,"/api/v1/products").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.GET, "/api/v1/products").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/products").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/products").hasRole(Role.ADMIN.name())
                 .requestMatchers("/api/v1/products/edit/**").hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated()
-                .and().authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthorizationFilter,UsernamePasswordAuthenticationFilter.class);
-
-
+                .and().authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -63,7 +59,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -71,7 +67,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer(){
+    public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
